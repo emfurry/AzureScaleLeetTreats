@@ -1,6 +1,15 @@
-﻿@{
+﻿@model RegistrationModel
+@{
     ViewBag.Title = "Register";
 }
 
 <h2>Register</h2>
 
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        <label for="model.Nickname">Nickname</label>        
+        <input type="text" class="form-control" id="model.Nickname" name="model.Nickname" placeholder="nickname">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+}

@@ -1,0 +1,121 @@
+﻿@model BuyModel
+@{
+    ViewBag.Title = "Buy";
+    var product = Model.Product;
+}
+
+<h2>Beat the AI to Win a:</h2>
+
+<div class="product thumbnail center-block">
+    <img src="@Url.Content(Model.ImageBaseUrl + product.ImageUrl)" alt="@product.Name">
+    <div class="caption">
+        <h3>@product.Name</h3>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <div id="CountDownCell" class="col-xs-6 text-center count-down" style="height: 50px; line-height: 50px">
+                X
+            </div>
+            <div class="col-xs-6 ai-hand-container">
+                <div class="ai-hand">
+                    <img src="~/Content/hands/rock.png" width="50" height="50" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+
+        <div class="btn-group user-hand" data-toggle="buttons">
+            <label class="btn btn-default active">
+                <input type="radio" name="options" value="rock" autocomplete="off" checked>
+                <img src="~/Content/hands/rock.png" width="50" height="50" />
+            </label>
+            <label class="btn btn-default">
+                <input type="radio" name="options" value="paper" autocomplete="off">
+                <img src="~/Content/hands/paper.png" width="50" height="50" />
+            </label>
+            <label class="btn btn-default">
+                <input type="radio" name="options" value="scissors" autocomplete="off">
+                <img src="~/Content/hands/scissors.png" width="50" height="50" />
+            </label>
+        </div>
+
+        <div id="result-tie" style="display: none">
+            <h3>Tie!</h3> <a href="@Url.Action("Buy", new { productId = product.ProductID })">Try again</a>
+        </div>
+        <div id="result-lose" style="display: none">
+            <h3>AI beat you!</h3> <a href="@Url.Action("Buy", new { productId = product.ProductID })">Try again</a>
+        </div>
+        <div id="result-win" style="display: none">
+            <h3>You won!</h3> <a href="@Url.Action("Catalog")">Win more candy</a>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+<script>
+    var seconds = 5;
+
+    function AiSelectMove()
+    {
+        var value = Math.random() * 3;
+        console.log(value);
+        if (value < 1)
+            return 'rock';
+        else if (value < 2)
+            return 'paper';
+        else
+            return 'scissors'
+    }
+
+    function SetAiSelection(selection)
+    {
+        var img = $('.ai-hand img').attr('src');
+        var newImg = img.replace(/\/(\w+)\./, '/' + selection + '.')
+        $('.ai-hand img').attr('src', newImg);
+    }
+
+    function RefreshCounter()
+    {
+        //$('.ai-hand img').attr('src', '/Content/hands/rock.png');
+
+        seconds--;
+        $('#CountDownCell').text(seconds);
+        if (seconds > 0)
+        {
+            $('.ai-hand').css({ top: '-20px' });
+            $('.ai-hand').animate({ top: 0 }, { duration: 600, easing: 'swing' });
+            setTimeout(RefreshCounter, 1000);
+        }
+        else
+        {
+            var userSelection = $('.user-hand input:radio:checked').val();
+
+            var selection = $.post('DecideWinner', { selection: userSelection }, function (data, textStatus, jqXHR)
+            {
+                var winner = data.winner;
+                var aiSelection = data.aiselection;
+                SetAiSelection(aiSelection);
+                if (winner == 'tie')
+                    $('#result-tie').show();
+                else if (winner == 'shopper')
+                    $('#result-win').show();
+                else
+                    $('#result-lose').show();
+            });
+        }
+    }
+
+    $(function ()
+    {
+        $('#CountDownCell').text(seconds);
+        setTimeout(RefreshCounter, 1000);
+    });
+</script>
+}

@@ -1,0 +1,23 @@
+﻿@model CatalogModel
+@{
+    ViewBag.Title = "Catalog";
+}
+
+<h2>Catalog</h2>
+
+<div class="container-fluid">
+    <div class="row">
+        @foreach (var product in Model.Products)
+        {
+            <div class="col-md-4 col-sm-6">
+                <div class="thumbnail">
+                    <img src="@Url.Content(Model.ImageBaseUrl + product.ImageUrl)" alt="@product.Name">
+                    <div class="caption">
+                        <h3>@product.Name</h3>
+                        <p><a href="@Url.Action("Buy", new { productId = product.ProductID })" class="btn btn-primary buy-now" role="button">Play to Win!</a></p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

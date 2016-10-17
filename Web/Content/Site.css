@@ -58,3 +58,23 @@ textarea {
 {
     margin-bottom: 0;
 }
+
+.product
+{
+    width: 300px;
+}
+
+.count-down
+{
+    font-size: 3em;
+}
+
+.ai-hand-container
+{
+    position: relative;
+}
+
+.ai-hand
+{
+    position: absolute;
+}
