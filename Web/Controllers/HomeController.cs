@@ -15,6 +15,22 @@ namespace AzureScaleLeetTreats.Controllers
     {
         private static Random _rnd = new Random();
 
+        private string GetClaimValue(string claimType)
+        {
+            if (!Request.IsAuthenticated) return null;
+
+            var ctx = Request.GetOwinContext();
+            var authenticationManager = ctx.Authentication;
+            Claim claim = authenticationManager.User.Claims.Where(c => c.Type == claimType).Single();
+            return claim.Value;
+        }
+
+        private int? GetShopperId()
+        {
+            string claim = GetClaimValue(ClaimTypes.NameIdentifier);
+            return Int32.Parse(claim);
+        }
+
         public ActionResult Index()
         {
             return View();
@@ -100,8 +116,9 @@ namespace AzureScaleLeetTreats.Controllers
                 return "ai";
         }
 
+        [Authorize]
         [HttpPost]
-        public JsonResult DecideWinner(string selection)
+        public JsonResult DecideWinner(int productId, string selection)
         {
             var value = _rnd.Next(3);
             string aiSelection;
@@ -113,6 +130,18 @@ namespace AzureScaleLeetTreats.Controllers
                 aiSelection = "scissors";
 
             string winner = SelectWinner(aiSelection, selection);
+
+            if (winner == "shopper")
+            {
+                int shopperId = GetShopperId().Value;
+                using (var db = new StoreDataContext())
+                {
+                    var order = new Order { ShopperID = shopperId, ProductID = productId };
+                    db.Orders.Add(order);
+                    db.SaveChanges();
+                }
+            }
+
             return Json(new { winner = winner, aiselection = aiSelection });
         }
     }

@@ -61,6 +61,7 @@
 @section scripts {
 <script>
     var seconds = 5;
+    var productId = @(product.ProductID);
 
     function AiSelectMove()
     {
@@ -97,7 +98,7 @@
         {
             var userSelection = $('.user-hand input:radio:checked').val();
 
-            var selection = $.post('DecideWinner', { selection: userSelection }, function (data, textStatus, jqXHR)
+            var selection = $.post('DecideWinner', { productId: productId, selection: userSelection }, function (data, textStatus, jqXHR)
             {
                 var winner = data.winner;
                 var aiSelection = data.aiselection;
