@@ -1,6 +1,10 @@
-﻿using System;
+﻿using AzureScaleLeetTreats.Data;
+using AzureScaleLeetTreats.Data.Model;
+using AzureScaleLeetTreats.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 
@@ -13,18 +17,41 @@ namespace AzureScaleLeetTreats.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Register()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
-        public ActionResult Contact()
+        private void LoginShopper(Shopper shopper)
         {
-            ViewBag.Message = "Your contact page.";
+            var claims = new List<Claim>();
+            claims.Add(new Claim(ClaimTypes.Name, shopper.NickName));
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, shopper.ShopperID.ToString()));
+            var id = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
 
-            return View();
+            var ctx = Request.GetOwinContext();
+            var authenticationManager = ctx.Authentication;
+            authenticationManager.SignIn(id);
+        }
+
+        [HttpPost]
+        public ActionResult Register(RegistrationModel model)
+        {
+            Shopper newShopper;
+            using (var db = new StoreDataContext())
+            {
+                newShopper = new Shopper
+                {
+                    NickName = model.Nickname,
+                    CreateDate = DateTime.UtcNow
+                };
+                db.Shoppers.Add(newShopper);
+                db.SaveChanges();
+            }
+
+            LoginShopper(newShopper);
+
+            return RedirectToAction("Index");
         }
     }
 }
