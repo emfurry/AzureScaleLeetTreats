@@ -1,13 +1,11 @@
 ﻿using AzureScaleLeetTreats.Data;
-using AzureScaleLeetTreats.Data.Migrations;
-using ElasticScaleStarterKit;
+using AzureScaleLeetTreats.Data.Shoppers;
+using AzureScaleLeetTreats.ShardUtilities;
 using Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement;
 using Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement.Schema;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Migrations;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -29,7 +27,7 @@ namespace DatabaseConfigurator
 
         private static void InitializeShard(string shardDatabaseName)
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<StoreDataContext, MigrationConfiguration>(true));
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<StoreDataContext, AzureScaleLeetTreats.Data.Migrations.MigrationConfiguration>(true));
 
             string connectionString = Configuration.GetConnectionString(Configuration.ShardMapManagerServerName, shardDatabaseName);
             using (var db = new StoreDataContext(connectionString))
@@ -40,8 +38,7 @@ namespace DatabaseConfigurator
 
         private static void CreateAndInitializeShard(ShardMapManager shardMapManager, int shardIndex)
         {
-            string prefix = Regex.Match(Configuration.ShardMapManagerDatabaseName, @"(\w+)_\w+").Groups[1].Value;
-            string shardDatabaseName = $"{prefix}_{shardIndex}";
+            string shardDatabaseName = Configuration.GetShardDatabaseName(shardIndex);
 
             // Create database
             if (!SqlDatabaseUtils.DatabaseExists(Configuration.ShardMapManagerServerName, shardDatabaseName))
@@ -57,6 +54,19 @@ namespace DatabaseConfigurator
             ShardLocation shardLocation = new ShardLocation(Configuration.ShardMapManagerServerName, shardDatabaseName);
             if (!shardMap.TryGetShard(shardLocation, out shard))
                 shard = shardMap.CreateShard(shardLocation);
+        }
+
+        private static void CreateAndInitializeAuthDatabase()
+        {
+            if (!SqlDatabaseUtils.DatabaseExists(Configuration.ShardMapManagerServerName, Configuration.AuthDatabaseName))
+                SqlDatabaseUtils.CreateDatabase(Configuration.ShardMapManagerServerName, Configuration.AuthDatabaseName);
+
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ShopperDataContext, AzureScaleLeetTreats.Data.Shoppers.Migrations.MigrationConfiguration>(true));
+
+            using (var db = new ShopperDataContext(Configuration.GetAuthConnectionString()))
+            {
+                db.Shoppers.ToArray();
+            }
         }
 
         static private ShardMapManager CreateAndConfigureShardMapManager()
@@ -89,15 +99,10 @@ namespace DatabaseConfigurator
         {
             ShardMapManager shardMapManager = CreateAndConfigureShardMapManager();
 
+            CreateAndInitializeAuthDatabase();
+
             for (int x = 0; x < Configuration.ShardCount; x++)
                 CreateAndInitializeShard(shardMapManager, x);
-
-            ShardMap shardMap = shardMapManager.GetShardMap(Configuration.ShardMapName);
-            SqlConnection conn = shardMap.OpenConnectionForKey<int>(1, Configuration.GetShardMapManagerConnectionString(), ConnectionOptions.Validate);
-            using (var db = new StoreDataContext(conn.ConnectionString))
-            {
-                var products = db.Products.ToArray();
-            }
         }
     }
 }

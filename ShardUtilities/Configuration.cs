@@ -3,13 +3,14 @@
 
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
-namespace ElasticScaleStarterKit
+namespace AzureScaleLeetTreats.ShardUtilities
 {
     /// <summary>
     /// Provides access to app.config settings, and contains advanced configuration settings.
     /// </summary>
-    internal static class Configuration
+    public static class Configuration
     {
         /// <summary>
         /// Gets the server name for the Shard Map Manager database, which contains the shard maps.
@@ -28,6 +29,14 @@ namespace ElasticScaleStarterKit
             {
                 var sb = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["LeetTreats_smm"].ConnectionString);
                 return sb.InitialCatalog;
+            }
+        }
+
+        public static string AuthDatabaseName
+        {
+            get
+            {
+                return "LeetTreats_auth";
             }
         }
 
@@ -77,6 +86,26 @@ namespace ElasticScaleStarterKit
         public static string GetShardMapManagerConnectionString()
         {
             return GetConnectionString(ShardMapManagerServerName, ShardMapManagerDatabaseName);
+        }
+
+        public static string GetShardGenericConnectionString()
+        {
+            SqlConnectionStringBuilder sb = new SqlConnectionStringBuilder(GetShardMapManagerConnectionString());
+            sb.DataSource = "";
+            sb.InitialCatalog = "";
+            return sb.ConnectionString;
+        }
+
+        public static string GetAuthConnectionString()
+        {
+            return GetConnectionString(ShardMapManagerServerName, AuthDatabaseName);
+        }
+
+        public static string GetShardDatabaseName(int shardIndex)
+        {
+            string prefix = Regex.Match(ShardMapManagerDatabaseName, @"(\w+)_\w+").Groups[1].Value;
+            string shardDatabaseName = $"{prefix}_{shardIndex}";
+            return shardDatabaseName;
         }
 
         /// <summary>

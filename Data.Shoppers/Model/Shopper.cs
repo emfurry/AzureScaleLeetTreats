@@ -6,18 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AzureScaleLeetTreats.Data.Model
+namespace AzureScaleLeetTreats.Data.Shoppers.Model
 {
     public class Shopper
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key]
         public int ShopperID { get; set; }
         [Required]
         [Index(IsUnique = true)]
         [StringLength(450, MinimumLength = 4)]
         public string UserName { get; set; }
         public DateTime CreateDate { get; set; }
-
-        public virtual ICollection<Order> Order { get; set; }
     }
 }

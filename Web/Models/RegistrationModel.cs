@@ -7,6 +7,6 @@ namespace AzureScaleLeetTreats.Web.Models
 {
     public class RegistrationModel
     {
-        public string Nickname { get; set; }
+        public string UserName { get; set; }
     }
 }

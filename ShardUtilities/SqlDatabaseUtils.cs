@@ -10,12 +10,12 @@ using System.Text;
 using System.Threading;
 using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
 
-namespace ElasticScaleStarterKit
+namespace AzureScaleLeetTreats.ShardUtilities
 {
     /// <summary>
     /// Helper methods for interacting with SQL Databases.
     /// </summary>
-    internal static class SqlDatabaseUtils
+    public static class SqlDatabaseUtils
     {
         /// <summary>
         /// SQL master database name.

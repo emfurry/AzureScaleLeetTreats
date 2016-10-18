@@ -56,7 +56,7 @@ namespace AzureScaleLeetTreats.Controllers
         private void LoginShopper(Shopper shopper)
         {
             var claims = new List<Claim>();
-            claims.Add(new Claim(ClaimTypes.Name, shopper.NickName));
+            claims.Add(new Claim(ClaimTypes.Name, shopper.UserName));
             claims.Add(new Claim(ClaimTypes.NameIdentifier, shopper.ShopperID.ToString()));
             var id = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
 
@@ -80,7 +80,7 @@ namespace AzureScaleLeetTreats.Controllers
             {
                 newShopper = new Shopper
                 {
-                    NickName = model.Nickname,
+                    UserName = model.UserName,
                     CreateDate = DateTime.UtcNow
                 };
                 db.Shoppers.Add(newShopper);

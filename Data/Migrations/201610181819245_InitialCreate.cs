@@ -11,11 +11,11 @@ namespace AzureScaleLeetTreats.Data.Migrations
                 "dbo.Orders",
                 c => new
                     {
-                        ShopperID = c.Int(nullable: false),
                         OrderID = c.Int(nullable: false, identity: true),
+                        ShopperID = c.Int(nullable: false),
                         ProductID = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => new { t.ShopperID, t.OrderID })
+                .PrimaryKey(t => t.OrderID)
                 .ForeignKey("dbo.Products", t => t.ProductID, cascadeDelete: true)
                 .ForeignKey("dbo.Shoppers", t => t.ShopperID, cascadeDelete: true)
                 .Index(t => t.ShopperID)
@@ -35,11 +35,12 @@ namespace AzureScaleLeetTreats.Data.Migrations
                 "dbo.Shoppers",
                 c => new
                     {
-                        ShopperID = c.Int(nullable: false, identity: true),
-                        NickName = c.String(nullable: false),
+                        ShopperID = c.Int(nullable: false),
+                        UserName = c.String(nullable: false, maxLength: 450),
                         CreateDate = c.DateTime(nullable: false),
                     })
-                .PrimaryKey(t => t.ShopperID);
+                .PrimaryKey(t => t.ShopperID)
+                .Index(t => t.UserName, unique: true);
             
         }
         
@@ -47,6 +48,7 @@ namespace AzureScaleLeetTreats.Data.Migrations
         {
             DropForeignKey("dbo.Orders", "ShopperID", "dbo.Shoppers");
             DropForeignKey("dbo.Orders", "ProductID", "dbo.Products");
+            DropIndex("dbo.Shoppers", new[] { "UserName" });
             DropIndex("dbo.Orders", new[] { "ProductID" });
             DropIndex("dbo.Orders", new[] { "ShopperID" });
             DropTable("dbo.Shoppers");

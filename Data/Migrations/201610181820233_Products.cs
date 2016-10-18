@@ -8,14 +8,14 @@ namespace AzureScaleLeetTreats.Data.Migrations
         public override void Up()
         {
             string sql;
-            sql = Util.GetEmbeddedResourceText("AzureScaleLeetTreats.Data.Migrations.Resources._201610171941550_Products.01_UP.sql");
+            sql = Util.GetEmbeddedResourceText("AzureScaleLeetTreats.Data.Migrations.Resources._201610181820233_Products.01_UP.sql");
             Sql(sql);
         }
-        
+
         public override void Down()
         {
             string sql;
-            sql = Util.GetEmbeddedResourceText("AzureScaleLeetTreats.Data.Migrations.Resources._201610171941550_Products.01_DN.sql");
+            sql = Util.GetEmbeddedResourceText("AzureScaleLeetTreats.Data.Migrations.Resources._201610181820233_Products.01_DN.sql");
             Sql(sql);
         }
     }

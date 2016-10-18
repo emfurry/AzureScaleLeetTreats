@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5F2E3733-0C7B-4033-92C0-2E9020C44B59}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{88F41BBA-FF6F-4A8D-82AC-6A16868702E9}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DatabaseConfigurator</RootNamespace>
-    <AssemblyName>DatabaseConfigurator</AssemblyName>
+    <RootNamespace>AzureScaleLeetTreats.Data.Shoppers</RootNamespace>
+    <AssemblyName>AzureScaleLeetTreats.Data.Shoppers</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,13 +38,8 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Azure.SqlDatabase.ElasticScale.Client, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.SqlDatabase.ElasticScale.Client.1.3.3\lib\net45\Microsoft.Azure.SqlDatabase.ElasticScale.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -57,26 +49,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Migrations\201610181821215_InitialCreate.cs" />
+    <Compile Include="Migrations\201610181821215_InitialCreate.Designer.cs">
+      <DependentUpon>201610181821215_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MigrationConfiguration.cs" />
+    <Compile Include="Model\Shopper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShopperDataContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Data.Shoppers\Data.Shoppers.csproj">
-      <Project>{88f41bba-ff6f-4a8d-82ac-6a16868702e9}</Project>
-      <Name>Data.Shoppers</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Data\Data.csproj">
-      <Project>{c435c7db-1419-471b-be24-8c6c3c71107b}</Project>
-      <Name>Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ShardUtilities\ShardUtilities.csproj">
-      <Project>{5DF1C8E8-8208-44A0-83D1-7BE4E64BA596}</Project>
-      <Name>ShardUtilities</Name>
-    </ProjectReference>
+    <EmbeddedResource Include="Migrations\201610181821215_InitialCreate.resx">
+      <DependentUpon>201610181821215_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

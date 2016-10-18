@@ -3,7 +3,7 @@
 
 using System;
 
-namespace ElasticScaleStarterKit
+namespace AzureScaleLeetTreats.ShardUtilities
 {
     internal static class ConsoleUtils
     {
