@@ -15,6 +15,11 @@ namespace AzureScaleLeetTreats.Data
 
         }
 
+        public StoreDataContext(string connectionString) : base(connectionString)
+        {
+
+        }
+
         public virtual DbSet<Shopper> Shoppers { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
