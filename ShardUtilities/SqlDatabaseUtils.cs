@@ -106,7 +106,7 @@ namespace AzureScaleLeetTreats.ShardUtilities
 
                 // Determine if we are connecting to Azure SQL DB
                 cmd.CommandText = "SELECT SERVERPROPERTY('EngineEdition')";
-                cmd.CommandTimeout = 60;
+                cmd.CommandTimeout = (int)TimeSpan.FromMinutes(5).TotalSeconds;
                 int engineEdition = conn.ExecuteCommand<int>(cmd);
 
                 if (engineEdition == 5)
