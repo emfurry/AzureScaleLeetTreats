@@ -11,7 +11,7 @@ namespace AzureScaleLeetTreats.Data
 {
     public class StoreDataContext : DbContext
     {
-        public StoreDataContext() : base("LeetTreats")
+        private StoreDataContext() : base("LeetTreats")
         {
 
         }

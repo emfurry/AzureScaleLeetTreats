@@ -1,35 +1,18 @@
 ﻿using AzureScaleLeetTreats.Data;
 using AzureScaleLeetTreats.Data.Model;
+using AzureScaleLeetTreats.ShardUtilities;
 using AzureScaleLeetTreats.Web.Models;
-using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 
-namespace AzureScaleLeetTreats.Controllers
+namespace AzureScaleLeetTreats.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private static Random _rnd = new Random();
-
-        private string GetClaimValue(string claimType)
-        {
-            if (!Request.IsAuthenticated) return null;
-
-            var ctx = Request.GetOwinContext();
-            var authenticationManager = ctx.Authentication;
-            Claim claim = authenticationManager.User.Claims.Where(c => c.Type == claimType).Single();
-            return claim.Value;
-        }
-
-        private int? GetShopperId()
-        {
-            string claim = GetClaimValue(ClaimTypes.NameIdentifier);
-            return Int32.Parse(claim);
-        }
 
         public ActionResult Index()
         {
@@ -46,23 +29,11 @@ namespace AzureScaleLeetTreats.Controllers
         public ActionResult Catalog()
         {
             var model = new CatalogModel { ImageBaseUrl = "~/Content/products/" };
-            using (var db = new StoreDataContext())
+            using (var db = CreateDataContext())
             {
                 model.Products = db.Products.ToArray();
             }
             return View(model);
-        }
-
-        private void LoginShopper(Shopper shopper)
-        {
-            var claims = new List<Claim>();
-            claims.Add(new Claim(ClaimTypes.Name, shopper.UserName));
-            claims.Add(new Claim(ClaimTypes.NameIdentifier, shopper.ShopperID.ToString()));
-            var id = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
-
-            var ctx = Request.GetOwinContext();
-            var authenticationManager = ctx.Authentication;
-            authenticationManager.SignIn(id);
         }
 
         [HttpPost]
@@ -70,32 +41,28 @@ namespace AzureScaleLeetTreats.Controllers
         {
             if (Request.IsAuthenticated)
             {
-                var authenticationManager = HttpContext.GetOwinContext().Authentication;
-                authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                SignOut();
                 return Redirect("~/");
             }
 
-            Shopper newShopper;
-            using (var db = new StoreDataContext())
+            var shopper = new Shopper
             {
-                newShopper = new Shopper
-                {
-                    UserName = model.UserName,
-                    CreateDate = DateTime.UtcNow
-                };
-                db.Shoppers.Add(newShopper);
-                db.SaveChanges();
-            }
+                UserName = model.UserName,
+                CreateDate = DateTime.UtcNow
+            };
 
-            LoginShopper(newShopper);
+            ShardManager.CreateShopper(shopper);
+
+            SignIn(shopper.ShopperID, shopper.UserName);
 
             return RedirectToAction("Catalog");
         }
 
+        [Authorize]
         public ActionResult Buy(int productId)
         {
             var model = new BuyModel { ImageBaseUrl = "~/Content/products/" };
-            using (var db = new StoreDataContext())
+            using (var db = CreateDataContext())
             {
                 model.Product = db.Products.Where(p => p.ProductID == productId).Single();
             }
@@ -133,10 +100,9 @@ namespace AzureScaleLeetTreats.Controllers
 
             if (winner == "shopper")
             {
-                int shopperId = GetShopperId().Value;
-                using (var db = new StoreDataContext())
+                using (var db = CreateDataContext())
                 {
-                    var order = new Order { ShopperID = shopperId, ProductID = productId };
+                    var order = new Order { ShopperID = ShopperId, ProductID = productId };
                     db.Orders.Add(order);
                     db.SaveChanges();
                 }

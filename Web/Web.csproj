@@ -160,6 +160,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -243,6 +244,10 @@
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{c435c7db-1419-471b-be24-8c6c3c71107b}</Project>
       <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ShardUtilities\ShardUtilities.csproj">
+      <Project>{5DF1C8E8-8208-44A0-83D1-7BE4E64BA596}</Project>
+      <Name>ShardUtilities</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
