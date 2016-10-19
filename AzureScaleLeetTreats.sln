@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "Tester\Tester.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShardUtilities", "ShardUtilities\ShardUtilities.csproj", "{5DF1C8E8-8208-44A0-83D1-7BE4E64BA596}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VerticalScale", "VerticalScale", "{73110E39-8A92-4728-A038-94F9D4245486}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VerticalScaleSqlDatabase", "VerticalScale\VerticalScaleSqlDatabase\VerticalScaleSqlDatabase.csproj", "{FF83DFEF-F69E-4642-A196-BAF3208C9BAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,9 +49,16 @@ Global
 		{5DF1C8E8-8208-44A0-83D1-7BE4E64BA596}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DF1C8E8-8208-44A0-83D1-7BE4E64BA596}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DF1C8E8-8208-44A0-83D1-7BE4E64BA596}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF83DFEF-F69E-4642-A196-BAF3208C9BAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF83DFEF-F69E-4642-A196-BAF3208C9BAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF83DFEF-F69E-4642-A196-BAF3208C9BAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF83DFEF-F69E-4642-A196-BAF3208C9BAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FF83DFEF-F69E-4642-A196-BAF3208C9BAD} = {73110E39-8A92-4728-A038-94F9D4245486}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45
