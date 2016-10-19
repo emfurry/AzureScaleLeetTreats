@@ -11,11 +11,11 @@ namespace AzureScaleLeetTreats.Data.Migrations
                 "dbo.Orders",
                 c => new
                     {
-                        OrderID = c.Int(nullable: false, identity: true),
                         ShopperID = c.Int(nullable: false),
+                        OrderID = c.Int(nullable: false, identity: true),
                         ProductID = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.OrderID)
+                .PrimaryKey(t => new { t.ShopperID, t.OrderID })
                 .ForeignKey("dbo.Products", t => t.ProductID, cascadeDelete: true)
                 .ForeignKey("dbo.Shoppers", t => t.ShopperID, cascadeDelete: true)
                 .Index(t => t.ShopperID)

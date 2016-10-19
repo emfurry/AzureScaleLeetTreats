@@ -40,6 +40,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -49,13 +50,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201610181819245_InitialCreate.cs" />
-    <Compile Include="Migrations\201610181819245_InitialCreate.Designer.cs">
-      <DependentUpon>201610181819245_InitialCreate.cs</DependentUpon>
+    <Compile Include="ElasticDbConfiguration.cs" />
+    <Compile Include="Migrations\201610192140155_InitialCreate.cs" />
+    <Compile Include="Migrations\201610192140155_InitialCreate.Designer.cs">
+      <DependentUpon>201610192140155_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201610181820233_Products.cs" />
-    <Compile Include="Migrations\201610181820233_Products.Designer.cs">
-      <DependentUpon>201610181820233_Products.cs</DependentUpon>
+    <Compile Include="Migrations\201610192140432_Products.cs" />
+    <Compile Include="Migrations\201610192140432_Products.Designer.cs">
+      <DependentUpon>201610192140432_Products.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\MigrationConfiguration.cs" />
     <Compile Include="Model\Order.cs" />
@@ -71,14 +73,14 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610181819245_InitialCreate.resx">
-      <DependentUpon>201610181819245_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610192140155_InitialCreate.resx">
+      <DependentUpon>201610192140155_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610181820233_Products.resx">
-      <DependentUpon>201610181820233_Products.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610192140432_Products.resx">
+      <DependentUpon>201610192140432_Products.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\Resources\201610181820233_Products\01_DN.sql" />
-    <EmbeddedResource Include="Migrations\Resources\201610181820233_Products\01_UP.sql" />
+    <EmbeddedResource Include="Migrations\Resources\201610192140432_Products\01_DN.sql" />
+    <EmbeddedResource Include="Migrations\Resources\201610192140432_Products\01_UP.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AzureScaleLeetTreats.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,6 +13,8 @@ namespace AzureScaleLeetTreats
     {
         protected void Application_Start()
         {
+            ElasticDbConfiguration.SetConfiguration(new ElasticDbConfiguration());
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

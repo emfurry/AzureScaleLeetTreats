@@ -36,7 +36,7 @@ namespace AzureScaleLeetTreats.ShardUtilities
         {
             get
             {
-                return "LeetTreats_auth";
+                return ShardMapManagerDatabaseName;
             }
         }
 

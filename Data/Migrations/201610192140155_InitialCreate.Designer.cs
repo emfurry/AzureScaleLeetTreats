@@ -7,13 +7,13 @@ namespace AzureScaleLeetTreats.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Products : IMigrationMetadata
+    public sealed partial class InitialCreate : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Products));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
         
         string IMigrationMetadata.Id
         {
-            get { return "201610181820233_Products"; }
+            get { return "201610192140155_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

@@ -97,6 +97,8 @@ namespace DatabaseConfigurator
 
         static void Main(string[] args)
         {
+            ElasticDbConfiguration.SetConfiguration(new ElasticDbConfiguration());
+
             ShardMapManager shardMapManager = CreateAndConfigureShardMapManager();
 
             CreateAndInitializeAuthDatabase();

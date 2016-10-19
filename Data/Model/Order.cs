@@ -10,9 +10,10 @@ namespace AzureScaleLeetTreats.Data.Model
 {
     public class Order
     {
-        [Key]
-        public int OrderID { get; set; }
+        [Key, Column(Order = 0), DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ShopperID { get; set; }
+        [Key, Column(Order = 1), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int OrderID { get; set; }
         public int ProductID { get; set; }
 
         public virtual Shopper Shopper { get; set; }
