@@ -1,8 +1,10 @@
 ﻿using AzureScaleLeetTreats.Data;
 using AzureScaleLeetTreats.Data.Model;
+using Microsoft.Azure.SqlDatabase.ElasticScale.Query;
 using Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +31,29 @@ namespace AzureScaleLeetTreats.ShardUtilities
             get
             {
                 return ShardMapManager.GetListShardMap<int>(Configuration.ShardMapName);
+            }
+        }
+
+        public static IEnumerable<T> MultiShardQuery<T>(string sql, Func<IDataReader, T> projection, IDataParameter[] parameters = null)
+        {
+            IEnumerable<Shard> shards = ShardMap.GetShards();
+
+            using (var conn = new MultiShardConnection(shards, Configuration.GetShardGenericConnectionString()))
+            {
+                using (MultiShardCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = sql;
+                    cmd.ExecutionOptions = MultiShardExecutionOptions.IncludeShardNameColumn;
+                    cmd.ExecutionPolicy = MultiShardExecutionPolicy.CompleteResults;
+                    cmd.CommandTimeout = 30;
+                    using (MultiShardDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            yield return projection(reader);
+                        }
+                    }
+                }
             }
         }
 

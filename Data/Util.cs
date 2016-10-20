@@ -12,7 +12,7 @@ namespace AzureScaleLeetTreats.Data
     {
         public static string GetEmbeddedResourceText(string resourceName)
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetCallingAssembly();
             using (var stream = assembly.GetManifestResourceStream(resourceName))
             {
                 using (var reader = new StreamReader(stream))

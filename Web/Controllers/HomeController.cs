@@ -4,6 +4,7 @@ using AzureScaleLeetTreats.ShardUtilities;
 using AzureScaleLeetTreats.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -56,6 +57,19 @@ namespace AzureScaleLeetTreats.Web.Controllers
             SignInUser(shopper.ShopperID, shopper.UserName);
 
             return Redirect("~/");
+        }
+
+        private static OrderSummaryModel MapOrderSummaryFromReader(IDataReader reader)
+        {
+            return new OrderSummaryModel
+            {
+                UserName = reader.GetString(0),
+                Total = reader.GetInt32(1),
+                KitKat = reader.GetInt32(2),
+                FifthAvenue = reader.GetInt32(3),
+                Butterfinger = reader.GetInt32(4),
+                Crunch = reader.GetInt32(5),
+            };
         }
 
         [Authorize]
@@ -153,6 +167,15 @@ namespace AzureScaleLeetTreats.Web.Controllers
             }
 
             return Json(new { winner = winner, aiselection = aiSelection });
+        }
+
+        [Authorize]
+        [HttpGet]
+        public ActionResult OrderSummary()
+        {
+            string sql = Util.GetEmbeddedResourceText("AzureScaleLeetTreats.Web.Controllers.MultiShardOrderQuery.sql");
+            OrderSummaryModel[] orderSummaries = ShardManager.MultiShardQuery(sql, MapOrderSummaryFromReader).ToArray();
+            return View(orderSummaries);
         }
     }
 }
