@@ -121,7 +121,7 @@ namespace AzureScaleLeetTreats.ShardUtilities
                                     "CREATE DATABASE {0} (EDITION = '{1}')",
                                     BracketEscapeName(db),
                                     Configuration.DatabaseEdition);
-                                cmd.CommandTimeout = 60;
+                                cmd.CommandTimeout = (int)TimeSpan.FromMinutes(5).TotalSeconds;
                                 cmd.ExecuteNonQuery();
                             }
                         });
