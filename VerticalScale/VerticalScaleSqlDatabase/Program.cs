@@ -5,6 +5,7 @@ using Microsoft.WindowsAzure.Management.Sql.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +41,7 @@ namespace VerticalScaleSqlDatabase
             return await sqlClient.Databases.UpdateAsync(serverName, databaseName, databaseParameters);
         }
 
+        [DebuggerStepThrough]
         private static string GetConfig(string configName)
         {
             return ConfigurationManager.AppSettings[configName];
