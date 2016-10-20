@@ -183,11 +183,21 @@
     <Content Include="Content\img\Furry%27s Leet Treats 53x51.png" />
     <Content Include="Content\products\5thave.jpg" />
     <Content Include="Content\products\butterfinger.jpg" />
+    <Content Include="Content\products\Crunch.jpg" />
+    <Content Include="Content\products\Ghirardelli.jpg" />
+    <Content Include="Content\products\Godiva.jpg" />
+    <Content Include="Content\products\Hershey.jpg" />
+    <Content Include="Content\products\HersheyCookiesCream.jpg" />
     <Content Include="Content\products\kitkat.jpg" />
+    <Content Include="Content\products\Lindt.jpg" />
+    <Content Include="Content\products\MMBrown.jpg" />
+    <Content Include="Content\products\MMYellow.jpg" />
+    <Content Include="Content\products\Snickers.jpg" />
+    <Content Include="Content\products\Twix.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
+    <Content Include="Content\site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -230,6 +240,7 @@
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Home\Catalog.cshtml" />
     <Content Include="Views\Home\Buy.cshtml" />
+    <Content Include="Views\Home\SignIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

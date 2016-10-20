@@ -1,9 +1,9 @@
-﻿@model RegistrationModel
+﻿
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "SignIn";
 }
 
-<h2>Register</h2>
+<h2>SignIn</h2>
 
 <div>
     @Html.ValidationSummary()
@@ -12,7 +12,7 @@
 @using (Html.BeginForm())
 {
     <div class="form-group">
-        <label for="model.UserName">User Name</label>        
+        <label for="model.UserName">User Name</label>
         <input type="text" class="form-control" id="model.UserName" name="model.UserName" placeholder="user name">
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>

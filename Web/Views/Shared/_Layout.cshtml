@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Furry's Leet Treats</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -21,11 +21,26 @@
                 </a>
                 <div class="navbar-text clearfix">Furry's Leet Treats</div>
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="navbar-collapse collapse navbar-left">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                </ul>
+            </div>
+            <div class="navbar-collapse collapse navbar-right">
+                <ul class="nav navbar-nav">
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li class="navbar-text">
+                            Hello, @ViewBag.ShopperName
+                        </li>
+                        <li>
+                            <a href="@Url.Action("SignOut", "Home")">Sign Out</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li><a href="@Url.Action("SignIn", "Home")">Sign In</a></li>
+                    }
                 </ul>
             </div>
         </div>
@@ -34,7 +49,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; 2016 - IT Solutions, Inc</p>
         </footer>
     </div>
 

@@ -32,6 +32,13 @@ namespace AzureScaleLeetTreats.ShardUtilities
             }
         }
 
+        private static void MapShopper(Shopper shopper, Data.Shoppers.Model.Shopper authDbShopper)
+        {
+            shopper.ShopperID = authDbShopper.ShopperID;
+            shopper.UserName = authDbShopper.UserName;
+            shopper.CreateDate = authDbShopper.CreateDate;
+        }
+
         private static Shopper CreateShopperInAuthenticationDatabase(Shopper shopper)
         {
             Data.Shoppers.Model.Shopper authDbShopper;
@@ -45,9 +52,7 @@ namespace AzureScaleLeetTreats.ShardUtilities
                 db.Shoppers.Add(authDbShopper);
                 db.SaveChanges();
             }
-            shopper.ShopperID = authDbShopper.ShopperID;
-            shopper.UserName = authDbShopper.UserName;
-            shopper.CreateDate = authDbShopper.CreateDate;
+            MapShopper(shopper, authDbShopper);
             return shopper;
         }
 
@@ -68,6 +73,20 @@ namespace AzureScaleLeetTreats.ShardUtilities
                 db.Shoppers.Add(shopper);
                 db.SaveChanges();
             }
+        }
+
+        public static Shopper GetShopperByUserName(string userName)
+        {
+            Data.Shoppers.Model.Shopper authDbShopper;
+            using (var db = new Data.Shoppers.ShopperDataContext(Configuration.GetAuthConnectionString()))
+            {
+                authDbShopper = db.Shoppers.Where(s => s.UserName == userName).SingleOrDefault();
+            }
+            if (authDbShopper == null) return null;
+
+            var shopper = new Shopper();
+            MapShopper(shopper, authDbShopper);
+            return shopper;
         }
 
         public static Shopper CreateShopper(Shopper shopper)

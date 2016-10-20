@@ -16,13 +16,46 @@ namespace AzureScaleLeetTreats.Web.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            if (Request.IsAuthenticated)
+                return RedirectToAction("Catalog");
+            else
+                return View();
         }
 
+        [HttpGet]
         public ActionResult Register()
         {
+            if (Request.IsAuthenticated)
+            {
+                SignOutUser();
+                return Redirect("~/");
+            }
+
             var model = new RegistrationModel();
             return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Register(RegistrationModel model)
+        {
+            Shopper shopper = ShardManager.GetShopperByUserName(model.UserName);
+            if (shopper != null)
+            {
+                ModelState.AddModelError("register", "User name already taken, please try again");
+                return View(model);
+            }
+
+            shopper = new Shopper
+            {
+                UserName = model.UserName,
+                CreateDate = DateTime.UtcNow
+            };
+
+            ShardManager.CreateShopper(shopper);
+
+            SignInUser(shopper.ShopperID, shopper.UserName);
+
+            return Redirect("~/");
         }
 
         [Authorize]
@@ -36,26 +69,37 @@ namespace AzureScaleLeetTreats.Web.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public ActionResult Register(RegistrationModel model)
+        [HttpGet]
+        public ActionResult SignIn()
         {
             if (Request.IsAuthenticated)
             {
-                SignOut();
+                SignOutUser();
                 return Redirect("~/");
             }
 
-            var shopper = new Shopper
+            var model = new RegistrationModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult SignIn(RegistrationModel model)
+        {
+            Shopper shopper = ShardManager.GetShopperByUserName(model.UserName);
+            if (shopper == null)
             {
-                UserName = model.UserName,
-                CreateDate = DateTime.UtcNow
-            };
+                ModelState.AddModelError("login", "Login failed, please try again");
+                return View(model);
+            }
+            SignInUser(shopper.ShopperID, shopper.UserName);
+            return Redirect("~/");
+        }
 
-            ShardManager.CreateShopper(shopper);
-
-            SignIn(shopper.ShopperID, shopper.UserName);
-
-            return RedirectToAction("Catalog");
+        [HttpGet]
+        public ActionResult SignOut()
+        {
+            SignOutUser();
+            return Redirect("~/");
         }
 
         [Authorize]

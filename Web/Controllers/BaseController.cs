@@ -12,6 +12,12 @@ namespace AzureScaleLeetTreats.Web.Controllers
 {
     public class BaseController : Controller
     {
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            ViewBag.ShopperName = Request.IsAuthenticated ? ShopperName : "";
+            base.OnActionExecuting(filterContext);
+        }
+
         protected string GetClaimValue(string claimType)
         {
             if (!Request.IsAuthenticated) return null;
@@ -31,12 +37,20 @@ namespace AzureScaleLeetTreats.Web.Controllers
             }
         }
 
+        protected string ShopperName
+        {
+            get
+            {
+                return GetClaimValue(ClaimTypes.Name);
+            }
+        }
+
         protected StoreDataContext CreateDataContext()
         {
             return ShardManager.CreateStoreDataContext(ShopperId);
         }
 
-        protected void SignIn(int id, string userName)
+        protected void SignInUser(int id, string userName)
         {
             var claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.NameIdentifier, id.ToString()));
@@ -47,7 +61,7 @@ namespace AzureScaleLeetTreats.Web.Controllers
             authenticationManager.SignIn(identity);
         }
 
-        protected void SignOut()
+        protected void SignOutUser()
         {
             var authenticationManager = Request.GetOwinContext().Authentication;
             authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
