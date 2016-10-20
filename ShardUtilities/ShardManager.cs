@@ -58,9 +58,9 @@ namespace AzureScaleLeetTreats.ShardUtilities
 
         private static void CreateShardMappingForShopper(int shopperId, ListShardMap<int> shardMap)
         {
-            int shardCount = shardMap.GetShards().Count();
+            int normalUserShardCount = shardMap.GetShards().Count() - 1;
 
-            int shardIndex = (shopperId - 1) % shardCount;
+            int shardIndex = (shopperId - 1) % normalUserShardCount;
             var shard = shardMap.GetShard(new ShardLocation(Configuration.ShardMapManagerServerName, Configuration.GetShardDatabaseName(shardIndex)));
 
             shardMap.CreatePointMapping(shopperId, shard);
