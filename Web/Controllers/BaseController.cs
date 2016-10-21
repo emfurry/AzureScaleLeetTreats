@@ -18,6 +18,23 @@ namespace AzureScaleLeetTreats.Web.Controllers
             base.OnActionExecuting(filterContext);
         }
 
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            if (filterContext.Exception is Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement.ShardManagementException && !filterContext.ExceptionHandled)
+            {
+                var err = (Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement.ShardManagementException)filterContext.Exception;
+                if (err.ErrorCode == Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement.ShardManagementErrorCode.MappingNotFoundForKey)
+                {
+                    SignOutUser();
+                    filterContext.Result = new RedirectResult("~/");
+                    filterContext.ExceptionHandled = true;
+                    return;
+                }
+            }
+            
+            base.OnException(filterContext);
+        }
+
         protected string GetClaimValue(string claimType)
         {
             if (!Request.IsAuthenticated) return null;
