@@ -171,6 +171,7 @@
     <Compile Include="Models\RegistrationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utilities\ReflectionUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -195,7 +196,7 @@
     <Content Include="Content\products\MMYellow.jpg" />
     <Content Include="Content\products\Snickers.jpg" />
     <Content Include="Content\products\Twix.jpg" />
-    <EmbeddedResource Include="Controllers\MultiShardOrderQuery.sql" />
+    <EmbeddedResource Include="Utilities\MultiShardOrderQuery.sql" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -243,6 +244,7 @@
     <Content Include="Views\Home\Catalog.cshtml" />
     <Content Include="Views\Home\Buy.cshtml" />
     <Content Include="Views\Home\SignIn.cshtml" />
+    <Content Include="Views\Home\OrderSummary.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -262,6 +264,9 @@
       <Project>{5DF1C8E8-8208-44A0-83D1-7BE4E64BA596}</Project>
       <Name>ShardUtilities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

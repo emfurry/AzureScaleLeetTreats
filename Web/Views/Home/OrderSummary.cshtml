@@ -1,0 +1,29 @@
+﻿@model OrderSummaryModel[]
+@{
+    ViewBag.Title = "Order Summary";
+}
+
+<h2>Order Summary</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            @foreach (string property in ReflectionUtil.GetPropertyNames(typeof(OrderSummaryModel)))
+            {
+                <th>@property</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                @foreach (string property in ReflectionUtil.GetPropertyNames(typeof(OrderSummaryModel)))
+                {
+                    <td>@ReflectionUtil.GetValue(property, order)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
