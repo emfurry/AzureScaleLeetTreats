@@ -163,6 +163,7 @@ namespace AzureScaleLeetTreats.Web.Controllers
         {
             string sql = Util.GetEmbeddedResourceText("AzureScaleLeetTreats.Web.Utilities.MultiShardOrderQuery.sql");
             OrderSummaryModel[] orderSummaries = ShardManager.MultiShardQuery(sql, ReflectionUtil.LoadObjectFromReader<OrderSummaryModel>).ToArray();
+            orderSummaries = orderSummaries.OrderByDescending(os => os.Total).ToArray();
             return View(orderSummaries);
         }
     }
